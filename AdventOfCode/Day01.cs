@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace AdventOfCode
 {
     public class Day01
     {
-        public static int FirstRepeated(string inputFile)
+        public static int FirstRepeated(string inputFile = "input01.txt")
         {
             int sum = 0;
             var lines = File.ReadAllLines(inputFile);
