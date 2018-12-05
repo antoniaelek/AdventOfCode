@@ -10,7 +10,8 @@ namespace AdventOfCode
             //Console.WriteLine(Day01.FirstRepeated());
             //Console.WriteLine(Day02.Checksum());
             //Console.WriteLine(string.Join('\n', Day02.CommonPart()));
-            Console.WriteLine(string.Join(',', Day03.FindNonOverlappingEntries()?.Select(e => e.ID)));
+            //Console.WriteLine(string.Join(',', Day03.FindNonOverlappingEntries()?.Select(e => e.ID)));
+            Day04.GetShifts();
         }
     }
 }
