@@ -8,7 +8,7 @@ namespace AdventOfCode
 {
     public class Day04
     {
-        // Find the guard that has the most minutes asleep
+        // Find the guard who sleeps most
         public static IEnumerable<(string employeeID, List<Shift> shifts)>
             OrderByTotalSleepTime(IEnumerable<Shift> shifts)
         {
@@ -16,6 +16,18 @@ namespace AdventOfCode
                 GroupBy(s => s.EmployeeID)?.
                 Select(sg => (employeeID: sg.Key, minutesSlept: sg.ToList()))?.
                 OrderByDescending(gs => gs.minutesSlept.Sum(g => g.MinutesSlept));
+        }
+
+        // Find rhe guard who is most frequently asleep on the same minute
+        public static IEnumerable<(string employeeID, int freq, int min)>
+            OrderBySleepMinuteFrequency(IEnumerable<Shift> shifts)
+        {
+            return shifts?.
+                GroupBy(s => s.EmployeeID)?.
+                Select(sg => (employeeID: sg.Key, 
+                              freq: SleepCountsByMinute(sg.ToList()).Max(out int id), 
+                              min: id))?.
+                OrderByDescending(t=>t.freq);
         }
 
         public static int[] SleepCountsByMinute(List<Shift> shifts)
