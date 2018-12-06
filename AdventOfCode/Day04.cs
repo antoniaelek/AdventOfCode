@@ -8,15 +8,40 @@ namespace AdventOfCode
 {
     public class Day04
     {
-        // n = number_of_entries
-        // sort: O(nlogn)
-        // foreach create Entry object: O(n) * O(1) 
+        // Find the guard that has the most minutes asleep
+        public static IEnumerable<(string employeeID, List<Shift> shifts)>
+            OrderByTotalSleepTime(IEnumerable<Shift> shifts)
+        {
+            return shifts?.
+                GroupBy(s => s.EmployeeID)?.
+                Select(sg => (employeeID: sg.Key, minutesSlept: sg.ToList()))?.
+                OrderByDescending(gs => gs.minutesSlept.Sum(g => g.MinutesSlept));
+        }
+
+        public static int[] SleepCountsByMinute(List<Shift> shifts)
+        {
+            int[] sleepsByMinute = new int[60];
+            foreach(var shift in shifts)
+            {
+                foreach (var s in shift.Sleeps)
+                {
+                    var st = s.Start.ClearSeconds();
+                    var end = s.End.ClearSeconds();
+                    for (var now = st; now < end; now = now.AddMinutes(1))
+                    {
+                        sleepsByMinute[now.Minute] = sleepsByMinute[now.Minute] + 1;
+                    }
+                }
+            }
+            return sleepsByMinute;
+        }
+
         public static IEnumerable<Shift> GetShifts(string inputFile = "input04.txt")
         {
             var sortedLogMessages = File.ReadAllLines(inputFile)?
                 .Select(l => ParseLog(l))?
                 .OrderBy(l => l.Timestamp);
-
+            
             var shifts = new List<Shift>();
             foreach (var logMessage in sortedLogMessages)
             {
@@ -40,7 +65,7 @@ namespace AdventOfCode
                 result: out DateTime ts)) throw new Exception("Unable to parse timestamp in input string.");
 
             var messageText = tsEndIdx + 2 < input.Length ? input.Substring(tsEndIdx + 2) : string.Empty;
-            
+
             return GenerateMessage(messageText, ts);
         }
 
@@ -96,7 +121,7 @@ namespace AdventOfCode
 
         public override void AddToCollection(List<Shift> collection)
         {
-            var sleep = collection.LastOrDefault().Sleeps.LastOrDefault(); 
+            var sleep = collection.LastOrDefault().Sleeps.LastOrDefault();
             sleep.End = Timestamp;
         }
     }
@@ -132,6 +157,18 @@ namespace AdventOfCode
         public string EmployeeID { get; set; }
         public DateTime Start { get; set; }
         public List<Sleep> Sleeps { get; set; } = new List<Sleep>();
+        public int MinutesSlept
+        {
+            get
+            {
+                return Sleeps.Sum(s => (int)(s.End.ClearSeconds() - s.Start.ClearSeconds()).TotalMinutes);
+            }
+        }
+
+        public Shift()
+        {
+            var x = Start - Start;
+        }
     }
 
     public class Sleep
