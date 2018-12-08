@@ -35,9 +35,23 @@ namespace AdventOfCode
             //Console.WriteLine("Result is: " + (freq.min * int.Parse(freq.employeeID)));
 
             // DAY 05
-            var polymer = Day05.ReactPolymerFromFile();
-            var filtered = Day05.ReactPloymerWithFilter().OrderBy(p => p.Value);
-            Console.WriteLine(string.Join('\n', filtered.Select(f => $"{f.Key} {f.Value.Length}")));
+            //var polymer = Day05.ReactPolymerFromFile();
+            //var filtered = Day05.ReactPloymerWithFilter().OrderBy(p => p.Value);
+            //Console.WriteLine(string.Join('\n', filtered.Select(f => $"{f.Key} {f.Value.Length}")));
+
+            // DAY 05
+            var grid = Day06.GetGrid();
+            var areas = new List<(int,int,int)>();
+            foreach(var loc in grid.Locations)
+            {
+                var area = grid.AreaClosestToElement(loc);
+                if (area.HasValue) areas.Add((area.Value, loc.X, loc.Y));
+            }
+
+            foreach(var a in areas.OrderBy(a => a.Item1))
+            {
+                Console.WriteLine($"({a.Item2}-{a.Item3}) {a.Item1}");
+            }
         }
     }
 }
