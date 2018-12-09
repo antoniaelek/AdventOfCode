@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace AdventOfCode
+namespace AdventOfCode.Day05
 {
-    public class Day05
+    public static class Task
     {
-        public static Dictionary<char, string> ReactPloymerWithFilter(string inputFile = "input05.txt")
+        public static void Solve()
+        {
+            var polymer = ReactPolymerFromFile();
+            var filtered = ReactPloymerWithFilter().OrderBy(p => p.Value);
+            Console.WriteLine(string.Join('\n', filtered.Select(f => $"{f.Key} {f.Value.Length}")));
+        }
+
+        public static Dictionary<char, string> ReactPloymerWithFilter(string inputFile = "inputs/day05.txt")
         {
             var input = File.ReadAllText(inputFile).TrimEnd();
             var set = new HashSet<char>();
@@ -26,7 +34,7 @@ namespace AdventOfCode
             return res;
         }
 
-        public static string ReactPolymerFromFile(string inputFile = "input05.txt")
+        public static string ReactPolymerFromFile(string inputFile = "inputs/day05.txt")
         {
             var input = File.ReadAllText(inputFile).TrimEnd();
             return ReactPolymer(input);

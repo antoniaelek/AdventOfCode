@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace AdventOfCode
+namespace AdventOfCode.Day01
 {
-    public class Day01
+    public static class Task
     {
-        public static int FirstRepeated(string inputFile = "input01.txt")
+        public static void Solve()
+        {
+            Console.WriteLine(FirstRepeated());
+        }
+
+        public static int FirstRepeated(string inputFile = "inputs/day01.txt")
         {
             int sum = 0;
             var lines = File.ReadAllLines(inputFile);

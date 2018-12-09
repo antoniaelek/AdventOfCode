@@ -2,12 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
-namespace AdventOfCode
+namespace AdventOfCode.Day04
 {
-    public class Day04
+    public static class Task
     {
+        public static void Solve()
+        {
+            var shifts = GetShifts();
+            var employee = OrderByTotalSleepTime(shifts).First();
+            var byMinute = SleepCountsByMinute(employee.shifts);
+            var max = byMinute.Max(out int idx);
+            Console.WriteLine($"Guard {employee.employeeID} " +
+                $"slept {employee.shifts.Sum(sh => sh.MinutesSlept)} minutes, " +
+                $"most ({max}) in minute {idx}");
+            Console.WriteLine("Result is: " + (idx * int.Parse(employee.employeeID)));
+
+            var freq = OrderBySleepMinuteFrequency(shifts).First();
+            Console.WriteLine($"Guard {freq.employeeID} " +
+                $"slept {freq.freq} times in minute {freq.min}");
+            Console.WriteLine("Result is: " + (freq.min * int.Parse(freq.employeeID)));
+
+        }
         // Find the guard who sleeps most
         public static IEnumerable<(string employeeID, List<Shift> shifts)>
             OrderByTotalSleepTime(IEnumerable<Shift> shifts)
@@ -48,7 +64,7 @@ namespace AdventOfCode
             return sleepsByMinute;
         }
 
-        public static IEnumerable<Shift> GetShifts(string inputFile = "input04.txt")
+        public static IEnumerable<Shift> GetShifts(string inputFile = "inputs/day04.txt")
         {
             var sortedLogMessages = File.ReadAllLines(inputFile)?
                 .Select(l => ParseLog(l))?
@@ -97,109 +113,6 @@ namespace AdventOfCode
                     break;
             }
             return message;
-        }
-    }
-
-    public abstract class Message
-    {
-        public DateTime Timestamp { get; }
-        public string EmployeeID { get; protected set; }
-
-        protected Message(DateTime timestamp)
-        {
-            Timestamp = timestamp;
-        }
-
-        public abstract void AddToCollection(List<Shift> collection);
-    }
-
-    public class FallsAsleepMessage : Message
-    {
-        public FallsAsleepMessage(DateTime timestamp) : base(timestamp)
-        {
-        }
-
-        public override void AddToCollection(List<Shift> collection)
-        {
-            collection.LastOrDefault().Sleeps.Add(new Sleep(Timestamp));
-        }
-    }
-
-    public class WakesUpMessage : Message
-    {
-        public WakesUpMessage(DateTime timestamp) : base(timestamp)
-        {
-        }
-
-        public override void AddToCollection(List<Shift> collection)
-        {
-            var sleep = collection.LastOrDefault().Sleeps.LastOrDefault();
-            sleep.End = Timestamp;
-        }
-    }
-
-    public class BeginShiftMessage : Message
-    {
-        public BeginShiftMessage(DateTime timestamp, string messageText) : base(timestamp)
-        {
-            if (!messageText.StartsWith("Guard #")) throw new Exception($"Message is not of type {GetType()}.");
-
-            var startIdx = messageText.IndexOf("#") + 1;
-            if (startIdx == 0) throw new Exception($"Message is not of type {GetType()}.");
-            messageText = messageText.Substring(startIdx);
-
-            var endIdx = messageText.IndexOf(" ");
-            if (endIdx == 0) throw new Exception($"Message is not of type {GetType()}.");
-            EmployeeID = messageText.Substring(0, endIdx);
-        }
-
-        public override void AddToCollection(List<Shift> collection)
-        {
-            // Initialize new shift
-            collection.Add(new Shift()
-            {
-                Start = Timestamp,
-                EmployeeID = EmployeeID
-            });
-        }
-    }
-
-    public class Shift
-    {
-        public string EmployeeID { get; set; }
-        public DateTime Start { get; set; }
-        public List<Sleep> Sleeps { get; set; } = new List<Sleep>();
-        public int MinutesSlept
-        {
-            get
-            {
-                return Sleeps.Sum(s => (int)(s.End.ClearSeconds() - s.Start.ClearSeconds()).TotalMinutes);
-            }
-        }
-
-        public Shift()
-        {
-            var x = Start - Start;
-        }
-    }
-
-    public class Sleep
-    {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        public Sleep()
-        {
-        }
-
-        public Sleep(DateTime start)
-        {
-            Start = start;
-        }
-
-        public Sleep(DateTime start, DateTime end) : this(start)
-        {
-            End = end;
         }
     }
 }

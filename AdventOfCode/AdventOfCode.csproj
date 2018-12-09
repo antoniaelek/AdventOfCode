@@ -6,22 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="input01.txt">
+    <None Update="inputs\day01.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input02.txt">
+    <None Update="inputs\input02.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input03.txt">
+    <None Update="inputs\input03.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input04.txt">
+    <None Update="inputs\input04.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input05.txt">
+    <None Update="inputs\input05.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="input06.txt">
+    <None Update="inputs\input06.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

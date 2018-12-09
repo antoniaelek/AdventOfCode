@@ -1,12 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AdventOfCode
+namespace AdventOfCode.Day02
 {
-    public class Day02
+    public static class Task
     {
-        public static int Checksum(string inputFile = "input02.txt")
+        public static void Solve()
+        {
+            Console.WriteLine(Checksum());
+            Console.WriteLine(string.Join('\n', CommonPart()));
+        }
+
+        public static int Checksum(string inputFile = "inputs/day02.txt")
         {
             int wordsWithDoubleCharCnt = 0;
             int wordsWothTripleCharCnt = 0;
@@ -19,7 +26,7 @@ namespace AdventOfCode
             return wordsWithDoubleCharCnt * wordsWothTripleCharCnt;
         }
 
-        public static IEnumerable<string> CommonPart(string inputFile = "input02.txt")
+        public static IEnumerable<string> CommonPart(string inputFile = "inputs/day02.txt")
         {
             var commonParts = new List<string>();
             var lines = File.ReadAllLines(inputFile);

@@ -1,37 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using static AdventOfCode.Grid;
 
-namespace AdventOfCode
+namespace AdventOfCode.Day06
 {
-    public static class Day06
-    {
-        public static Grid GetGrid(string inputFile = "input06.txt")
-        {
-            var input = File.ReadAllLines(inputFile);
-            var locations = GetLocations(input);
-            return new Grid(locations);
-        }
-
-        private static List<LabeledGridElement> GetLocations(string[] input)
-        {
-            var locations = new List<LabeledGridElement>();
-            for (var i = 0; i < input.Length; i++)
-            {
-                var coordinates = input[i].Split(',');
-                if (coordinates.Length == 2
-                    && int.TryParse(coordinates[0], out int x)
-                    && int.TryParse(coordinates[1], out int y))
-                {
-                    locations.Add(new LabeledGridElement(x, y));
-                }
-            }
-            return locations;
-        }
-    }
 
     public class Grid
     {
@@ -142,59 +113,6 @@ namespace AdventOfCode
             foreach (var loc in locations)
             {
                 Array[loc.X, loc.Y] = new LabeledGridElement(loc.X, loc.Y, loc.Label);
-            }
-        }
-
-        public class GridElement
-        {
-            public int X { get; }
-            public int Y { get; }
-            public List<LabeledGridElement> Distances { get; set; } = new List<LabeledGridElement>();
-
-            public GridElement(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
-
-            public int DistanceTo(GridElement other)
-            {
-                return Math.Abs(X - other.X) + Math.Abs(Y - other.Y);
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj is GridElement &&
-                    X == ((GridElement)(obj)).X &&
-                    Y == ((GridElement)(obj)).Y;
-            }
-
-            public override int GetHashCode()
-            {
-                return X.GetHashCode() + Y.GetHashCode();
-            }
-        }
-
-        public class LabeledGridElement : GridElement
-        {
-            public string Label { get; }
-
-            public LabeledGridElement(int x, int y, string label = null) : base(x, y)
-            {
-                Label = label ?? Guid.NewGuid().ToString();
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj is LabeledGridElement &&
-                    Label == ((LabeledGridElement)(obj)).Label &&
-                    X == ((LabeledGridElement)(obj)).X &&
-                    Y == ((LabeledGridElement)(obj)).Y;
-            }
-
-            public override int GetHashCode()
-            {
-                return Label.GetHashCode() + X.GetHashCode() + Y.GetHashCode();
             }
         }
     }
