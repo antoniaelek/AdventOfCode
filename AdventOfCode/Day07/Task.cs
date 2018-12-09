@@ -48,34 +48,37 @@ namespace AdventOfCode.Day07
             var seen = new List<Node>();
             while(next.Any())
             {
-                // add curr to SEEN
+                // Add current node to the list of seen nodes
                 seen.Add(curr);
 
-                // choose new current from next or prev first alphabetically 
-                // that satisfies condition new.prevs IN seen
+                // Choose new current node from joint next and previous nodes 
                 var join = next;
                 foreach (var p in prev)
                 {
                     join.Add(p);
                 }
+                // Cosen node will be the first (alphabetically) that satisfies
+                // the condition that all its previous nodes are already seen
                 var newCurr = PickNewCurrent(nodesSet, join, seen.Select(n=>n.Label).ToList());
 
-                // add all other old current's nexts to prev
-                // (unless they are in new curr's nexts) 
+                // Add all other old current's next nodes to the list of previous nodes,
+                // unless they are in new current's next nodes list 
                 foreach (var n in curr.Next)
                 {
                     if (!newCurr.Next.Contains(n)) prev.Add(n);
                 }
 
-                // and optionally remove from prev the one that is new current
+                // Remove the choden node from list of previous nodes
                 prev.Remove(newCurr.Label);
 
-                // set new current
+                // Set the new current node
                 curr = newCurr;
 
-                // set new next as current.next
+                // Set new current's next node as next
                 next = curr.Next;
             }
+
+            // Add last node
             seen.Add(curr);
             return seen;
         }
