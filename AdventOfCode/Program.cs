@@ -48,10 +48,11 @@ namespace AdventOfCode
                 if (area.HasValue) areas.Add((area.Value, loc.X, loc.Y));
             }
 
-            foreach(var a in areas.OrderBy(a => a.Item1))
-            {
-                Console.WriteLine($"({a.Item2}-{a.Item3}) {a.Item1}");
-            }
+            //foreach(var a in areas.OrderBy(a => a.Item1))
+            //{
+            //    Console.WriteLine($"({a.Item2}-{a.Item3}) {a.Item1}");
+            //}
+            Console.WriteLine(grid.AreaWithinDistance(10000).Count());
         }
     }
 }

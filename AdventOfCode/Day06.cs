@@ -51,6 +51,25 @@ namespace AdventOfCode
             UpdateDistances(locations);
         }
 
+        public IEnumerable<GridElement> AreaWithinDistance(int minTotalDistance)
+        {
+            var results = new List<GridElement>();
+            foreach (var el in Array)
+            {
+                var distance = 0;
+                foreach (var loc in Locations)
+                {
+                    distance += el.DistanceTo(loc);
+                }
+
+                if (distance <= minTotalDistance)
+                {
+                    results.Add(el);
+                }
+            }
+            return results;
+        }
+
         public int? AreaClosestToElement(LabeledGridElement element)
         {
             var result = 0;
@@ -73,7 +92,7 @@ namespace AdventOfCode
             }
             return result;
         }
-        
+
         private void UpdateDistances(IEnumerable<LabeledGridElement> locations)
         {
             foreach (var targetLoc in locations)
