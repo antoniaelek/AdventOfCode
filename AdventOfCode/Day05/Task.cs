@@ -11,8 +11,9 @@ namespace AdventOfCode.Day05
         public static void Solve()
         {
             var polymer = ReactPolymerFromFile();
-            var filtered = ReactPloymerWithFilter().OrderBy(p => p.Value);
-            Console.WriteLine(string.Join('\n', filtered.Select(f => $"{f.Key} {f.Value.Length}")));
+            Console.WriteLine(polymer.Length);
+            //var filtered = ReactPloymerWithFilter().OrderBy(p => p.Value);
+            //Console.WriteLine(string.Join('\n', filtered.Select(f => $"{f.Key} {f.Value.Length}")));
         }
 
         public static Dictionary<char, string> ReactPloymerWithFilter(string inputFile = "inputs/day05.txt")
