@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 
 namespace AdventOfCode.Day08
 {
@@ -15,6 +15,22 @@ namespace AdventOfCode.Day08
             Children = new Node[childrenCount];
             MetadataCount = metadataCount;
             Metadata = new int[metadataCount];
+        }
+
+        public int Value()
+        {            
+            if (ChildrenCount == 0)
+                return Metadata.Sum();
+
+            int value = 0;
+
+            foreach(var idx in Metadata)
+            {
+                if (idx == 0 || idx > ChildrenCount) continue;
+                value += Children[idx - 1].Value();
+            }
+
+            return value;
         }
 
         public static (Node node, int index) Construct(int idx, int[] input)
