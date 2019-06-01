@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Day09.Task.Solve();
+            Day10.Task.Solve();
         }
     }
 }
